@@ -14,3 +14,7 @@ Notepad++ https://notepad-plus-plus.org/download/v6.7.9.2.html (might be Windows
 Bluefish http://bfwiki.tellefsen.net/index.php/Installing_Bluefish
 
 Sublime Text Editor http://www.sublimetext.com/2
+
+### Links used within the Lecture Notes
+
+Get the Latitude Longitude of ANY Point http://dbsgeo.com/latlon/
