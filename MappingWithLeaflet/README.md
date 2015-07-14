@@ -18,3 +18,27 @@ Sublime Text Editor http://www.sublimetext.com/2
 ### Links used within the Lecture Notes
 
 Get the Latitude Longitude of ANY Point http://dbsgeo.com/latlon/
+
+LEAFLET - Layer Providers Page - here you can pick a different background layer. The Javascript you require to insert this layer into your webmap application is also included http://leaflet-extras.github.io/leaflet-providers/preview/
+
+US Geological Survey Current Earth Quake Activity for the Earth in GeoJSON format: http://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
+
+GeoHack - Geographical centre of all land surfaces on Earth (Isenberg 2003) 
+https://tools.wmflabs.org/geohack/geohack.php?pagename=Geographical_centre_of_Earth&params=40_52_N_34_34_E_type:landmark_scale:1000000&title=Geographical+centre+of+all+land+surfaces+on+Earth+%28Isenberg+2003%29
+
+Direct OVERPASS API Link to the "Parking in London Query" http://overpass-turbo.eu/s/aq0
+
+---------------------------------------
+The code for the Parking in London Query
+
+node
+  [amenity=parking]
+(around:3000,51.507343,-0.127656);
+out body;
+---------------------------------------
+
+
+
+
+
+
