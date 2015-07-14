@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FOSS4VGI - Leaflet Lectures - GeoJson Example 1</title>
+<!-- This part of our web page should hardly change over the course of lecture today -->
+<!-- This part of the web-page tells the web-browser it will need certain functionality
+to make the page display/function as the programmer intended -->
+<!-- There should be no need for you to change any of the links below -->
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Bootstrap Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<!-- JQuery - which is needed by Bootstrap and Leaflet -->
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript for Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	
+<!-- Include Leaflet -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>	
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+
+</head>
+
+<body>
+<div class="container">
+	<!-- start the row of content -->
+<div class="row">
+	
+	<h1>This is GeoJson Example 1 - Our first example of using GeoJSON in Leaflet</h1>	<!-- We can change this piece of text each time -->
+	<h2>US Geological Survey - Past 7 Days Earthquakes </h2>
+	<div id="map" style="width: 100%; height: 600px"></div>
+	<div id="mycoordinates"</div>
+</div><!-- close the row of content-->
+
+<script><!-- This is where our mapping code starts -->
+// This is our base layer - you should not need to change this in many examples
+var MapQuestOpen_OSM = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+	type: 'map',
+	ext: 'jpg',
+	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: '1234'
+});
+// Notice how the MAP is centered at a particular point - notice the ZOOM level
+var map = L.map('map', {center: [40.866667, 34.566667], zoom: 2,layers: [MapQuestOpen_OSM ]});
+	
+var baseMaps = {"MapQuest OSM": MapQuestOpen_OSM };
+
+  
+
+<!-- This is where we are going to get Javascript to gather the GeoJSON and make it available-->
+<!-- so that Leaflet can display it -->
+<!-- We need to make a special LAYER for our GeoJson -->
+<!-- We are going to make a group for our 'top layers' -->
+var myGeoJSONLayers = L.layerGroup(); 
+  
+  <!-- we juse JQUERY to access our GeoJSON -->
+  <!-- Remember our GeoJSON is stored in a subfolder - so we need to make sure we get the file location correct-->
+  <!-- This will become a new layer -->
+  
+  $.getJSON("./geojson/all_week.geojson",  
+     function(data) {
+        var geojson = L.geoJson(data);
+        geojson.addTo(map);
+        <!-- add our new layer to the group of top layers -->
+        myGeoJSONLayers.addLayer(geojson);
+     }
+  );
+// Notice that we have made a change here also. 
+// We have added the myGeoJSONLayers variable so that Leaflet knows that you 
+// want to include the GeoJSON as a layer on the map
+// Notice that we also make a place where we can switch on/off the layer
+var overlayMaps = {"Past 7 Days EQ": myGeoJSONLayers};	
+
+L.control.layers(baseMaps, overlayMaps,myGeoJSONLayers).addTo(map); 
+
+</script><!-- This is where our mapping code ends -->
+</div><!-- close the container -->	
+</body>
+</html>

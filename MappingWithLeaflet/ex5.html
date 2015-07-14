@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FOSS4VGI - Leaflet Lectures - Example 5</title>
+<!-- This part of our web page should hardly change over the course of lecture today -->
+<!-- This part of the web-page tells the web-browser it will need certain functionality
+to make the page display/function as the programmer intended -->
+<!-- There should be no need for you to change any of the links below -->
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Bootstrap Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<!-- JQuery - which is needed by Bootstrap and Leaflet -->
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript for Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	
+<!-- Include Leaflet -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>	
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+
+</head>
+
+<body>
+<div class="container">
+	<!-- start the row of content -->
+<div class="row">
+	
+	<h1>This is Example 5 - Our very own version of Get Lat Long tool</h1>	<!-- We can change this piece of text each time -->
+	<h2>Just click anywhere on the Map</h2>
+	<div id="map" style="width: 100%; height: 600px"></div>
+	<div id="mycoordinates"</div>
+</div><!-- close the row of content-->
+
+<script><!-- This is where our mapping code starts -->
+// This is our base layer - you should not need to change this in many examples
+var MapQuestOpen_OSM = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+	type: 'map',
+	ext: 'jpg',
+	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: '1234'
+});
+// Notice how the MAP is centered at a particular point - notice the ZOOM level
+var map = L.map('map', {center: [45.80880, 9.08367], zoom: 15,layers: [MapQuestOpen_OSM ]});
+	
+var baseMaps = {"MapQuest OSM": MapQuestOpen_OSM };
+
+var overlayMaps = { };	   
+	   
+L.control.layers(baseMaps, overlayMaps).addTo(map); 	 
+
+// This is the where Javascript is connected to the map when you 'click' on the map
+map.on('click', onMapClick);
+
+// THIS IS NEW. This is a special FUNCTION from Javascript. 
+// Leaflet has lots of functionality that we can use. This is very useful to display information about the map
+function onMapClick(e) {
+	var theDateAndTime = new Date();
+	var mapCenter = map.getCenter();
+    $("#mycoordinates").html("<p class = 'lead'>MyGetLatLong Says:<br/> At " + theDateAndTime + "<br/>You clicked the map at Coordinates " + "(Lat, Lon) = " + e.latlng.lat + "," + e.latlng.lng +"<br/>Also the map is at Zoom level "+ map.getZoom() + "<br/>The CENTER of the map is currently at Coordinates " + "(Lat,Lon) = " + mapCenter.lat + "," + mapCenter.lng + "</p>");
+}
+
+
+</script><!-- This is where our mapping code ends -->
+</div><!-- close the container -->	
+</body>
+</html>

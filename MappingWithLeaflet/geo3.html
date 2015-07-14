@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>FOSS4VGI - Leaflet Lectures - GeoJson Example 3</title>
+<!-- This part of our web page should hardly change over the course of lecture today -->
+<!-- This part of the web-page tells the web-browser it will need certain functionality
+to make the page display/function as the programmer intended -->
+<!-- There should be no need for you to change any of the links below -->
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Bootstrap Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<!-- JQuery - which is needed by Bootstrap and Leaflet -->
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Latest compiled and minified JavaScript for Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	
+<!-- Include Leaflet -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>	
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+
+</head>
+
+<body>
+<div class="container">
+	<!-- start the row of content -->
+<div class="row">
+	
+	<h1>This is GeoJson Example 3 - Our third example of using GeoJSON in Leaflet</h1>	<!-- We can change this piece of text each time -->
+	<h2>PARKING PLACES in Central London, UK. GeoJSON data from the Overpass Turbo service</h2>
+	<div id="map" style="width: 100%; height: 600px"></div>
+	<div id="mycoordinates"</div>
+</div><!-- close the row of content-->
+
+<script><!-- This is where our mapping code starts -->
+// This is our base layer - you should not need to change this in many examples
+var MapQuestOpen_OSM = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+	type: 'map',
+	ext: 'jpg',
+	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: '1234'
+});
+// Notice how the MAP is centered at a particular point - notice the ZOOM level
+var map = L.map('map', {center: [51.507343,-0.127656], zoom: 14,layers: [MapQuestOpen_OSM ]});
+	
+var baseMaps = {"MapQuest OSM": MapQuestOpen_OSM };
+
+  
+
+<!-- This is where we are going to get Javascript to gather the GeoJSON and make it available-->
+<!-- so that Leaflet can display it -->
+<!-- We need to make a special LAYER for our GeoJson -->
+<!-- We are going to make a group for our 'top layers' -->
+var myGeoJSONLayers = L.layerGroup(); 
+  
+  <!-- we juse JQUERY to access our GeoJSON -->
+  <!-- Remember our GeoJSON is stored in a subfolder - so we need to make sure we get the file location correct-->
+  <!-- This will become a new layer -->
+  
+  $.getJSON("./geojson/londonparking.geojson",  
+     function(data) {
+		 // tell Leaflet to go to the function action_To_Perform_When_Marker_Is_Clicked_On_The_Map
+		 // when someone clicks on one of the objects in the GeoJSON layer
+        var geojson = L.geoJson(data,{onEachFeature: action_To_Perform_When_Marker_Is_Clicked_On_The_Map});
+        geojson.addTo(map);
+        <!-- add our new layer to the group of top layers -->
+        myGeoJSONLayers.addLayer(geojson);
+     }
+  );
+// Notice that we have made a change here also. 
+// We have added the myGeoJSONLayers variable so that Leaflet knows that you 
+// want to include the GeoJSON as a layer on the map
+// Notice that we also make a place where we can switch on/off the layer
+var overlayMaps = {"London Parking": myGeoJSONLayers};	
+
+L.control.layers(baseMaps, overlayMaps,myGeoJSONLayers).addTo(map); 
+
+// This is where Leaflet will go if you click on any of the objects which are in the 
+// GeoJSON file
+function action_To_Perform_When_Marker_Is_Clicked_On_The_Map(feature, layer) {
+
+    // does this clicked feature have any properties in its GeoJSON?
+    if (feature.properties)
+    {
+		// the text for the Popup
+		var PopupText = []; 
+		
+		PopupText.push("<h3>Car Park Info</h3>");
+			
+		if (feature.properties.name) // if this is a property called name
+			PopupText.push("<br/>The NAME of the car park is " + feature.properties.name)			
+
+		if (feature.properties.type) // if this is a property called operator
+			PopupText.push("<br/>The OPERATOR of the car park is " + feature.properties.operator)	
+			
+		if (feature.properties.capacity) // if this is a property called capacity
+			PopupText.push("<br/>The Capacity of the Car Park is " + feature.properties.capacity)	
+			
+		// Join all the text to make the Popup	
+		layer.bindPopup("<p>" + PopupText.join() + "</p>");						
+	} // end if
+} // end of function
+
+</script><!-- This is where our mapping code ends -->
+</div><!-- close the container -->	
+</body>
+</html>
