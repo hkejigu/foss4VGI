@@ -28,7 +28,6 @@ https://tools.wmflabs.org/geohack/geohack.php?pagename=Geographical_centre_of_Ea
 
 Direct OVERPASS API Link to the "Parking in London Query" http://overpass-turbo.eu/s/aq0
 
----------------------------------------
 The code for the Parking in London Query
 ```
 node
@@ -36,10 +35,18 @@ node
 (around:3000,51.507343,-0.127656);
 out body;
 
----------------------------------------
 ```
+The code for the LANDUSE polygons in rural Estonia. Estonia have used a bulk import of the Corine Landcover Map so there are LOTS of Landuse polygons
 
+```
+way 
+  [landuse]
+  (around:5000, 58.53836037096827,26.829261778621003);
 
+(._;>;);
+
+out body;
+```
 
 
 
